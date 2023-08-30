@@ -1,16 +1,16 @@
-const express = require("express");
-const tourController = require("./../controllers/tourControllers");
+const express = require('express');
+const tourController = require('../controllers/tourControllers');
 
 const router = express.Router();
-router.param("id", tourController.checkID); // This Middleware will check all params having id and check its value
+router.param('id', tourController.checkID); // This Middleware will check all params having id and check its value
 
 router
-  .route("/")
+  .route('/')
   .get(tourController.getAllTours)
   .post(tourController.checkBody, tourController.createTour); // checkBody middleware is used to check body before running createTour
 
 router
-  .route("/:id")
+  .route('/:id')
   .get(tourController.getTour)
   .delete(tourController.deleteTour)
   .patch(tourController.updateTour);
