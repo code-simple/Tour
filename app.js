@@ -6,20 +6,18 @@ const userRouter = require('./routes/userRoutes');
 
 const app = express();
 
-// Middlewares
+// Morgan Middlewares
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+
 app.use(express.json());
+// Hosting files in public folder
 app.use(express.static(`${__dirname}/public`));
 
+// This middleweare we can use requestTime
 app.use((req, res, next) => {
-  console.log('Hello from the middleweare');
-  next();
-});
-//This middleweare we can use requestTime
-app.use((req, res, next) => {
-  req.requestTime = `Request Time: ${new Date().toISOString()}`;
+  req.requestTime = `Request Time: ${new Date().toDateString()}`;
   next();
 });
 
