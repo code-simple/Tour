@@ -2,7 +2,11 @@ const express = require('express');
 const tourController = require('../controllers/tourControllers');
 
 const router = express.Router();
-// router.param('id', tourController.checkID); // This Middleware will check all params having id and check its value
+
+//top-5-cheap middleware
+router
+  .route('/top-5-cheap')
+  .get(tourController.aliasTopTours, tourController.getAllTours);
 
 router
   .route('/')

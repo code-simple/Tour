@@ -1,5 +1,13 @@
 const Tour = require('../models/tourModel');
 
+// Perfect example of aliasing & how to use Middleware
+exports.aliasTopTours = async (req, res, next) => {
+  req.query.limit = '5';
+  req.query.sort = 'price,-ratingsAverage';
+  req.query.fields = 'name,price,ratingsAverage,difficulty';
+  next();
+};
+
 exports.getAllTours = async (req, res) => {
   try {
     // 1) Filtering
