@@ -4,7 +4,6 @@
     "rules": {
       "prettier/prettier": "error",
       "import/no-extraneous-dependencies": "off",
-
       "spaced-comment": "off",
       "no-console": "off",
       "consistent-return": "off",
@@ -16,7 +15,16 @@
       "no-underscore-dangle": "off",
       "class-methods-use-this": "off",
       "prefer-destructuring": ["error", { "object": true, "array": false }],
-      "no-unused-vars":"off"
+      "no-unused-vars":"off",
+      "no-unused-expressions": "off",
+      "lines-between-class-members":"off",
+      "no-sequences":"off",
+      "prettier/prettier": [
+        "error",
+        {
+          "endOfLine": "auto"
+        }
+      ]
     }
   }
   
