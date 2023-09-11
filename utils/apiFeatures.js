@@ -16,7 +16,7 @@ class APIFeatures {
 
     this.query = this.query.find(JSON.parse(queryStr));
 
-    return this;
+    return this; // it call itself to execute, similarly other methods also
   }
   sort() {
     if (this.queryString.sort) {

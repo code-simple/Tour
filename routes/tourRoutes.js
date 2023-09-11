@@ -8,6 +8,11 @@ router
   .route('/top-5-cheap')
   .get(tourController.aliasTopTours, tourController.getAllTours);
 
+// Tour Stats
+router.route('/tour-stats').get(tourController.getTourStats);
+// Monthly Plan
+router.route('/monthlyPlan/:year').get(tourController.getMonthlyPlan);
+
 router
   .route('/')
   .get(tourController.getAllTours)
