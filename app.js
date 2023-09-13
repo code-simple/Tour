@@ -25,6 +25,7 @@ app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 
 // Route Error handling
+//NOTE: whenever there is next(err) that will always jump to globalErrorHandler as it has (err,) in it.
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
 });

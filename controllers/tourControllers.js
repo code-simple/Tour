@@ -1,6 +1,12 @@
 const Tour = require('../models/tourModel');
 const APIFeatures = require('../utils/apiFeatures');
 
+const catchAsync = (fn) => {
+  return (req, res, next) => {
+    fn(req, res, next).catch(next);
+  };
+};
+
 // Perfect example of aliasing & how to use Middleware
 exports.aliasTopTours = async (req, res, next) => {
   req.query.limit = '5';
@@ -52,22 +58,15 @@ exports.getTour = async (req, res) => {
   }
 };
 
-exports.createTour = async (req, res) => {
-  try {
-    const newTour = await Tour.create(req.body);
-    res.status(201).json({
-      status: 'Success',
-      data: {
-        tour: newTour,
-      },
-    });
-  } catch (error) {
-    res.status(400).json({
-      status: 'Failed',
-      message: error, // We will modify errors
-    });
-  }
-};
+exports.createTour = catchAsync(async (req, res, next) => {
+  const newTour = await Tour.create(req.body);
+  res.status(201).json({
+    status: 'Success',
+    data: {
+      tour: newTour,
+    },
+  });
+});
 // Remmeber we are doing PATCH request here , as in model we set this function for patch and not PUT, PUT will modify the whole object
 //e.g if we send PUT price :400 then everything will go away and only price property will remain.
 exports.updateTour = async (req, res) => {
