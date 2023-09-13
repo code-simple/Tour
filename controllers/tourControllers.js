@@ -74,7 +74,7 @@ exports.updateTour = async (req, res) => {
   try {
     const updateTour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
-      runValidators: true,
+      runValidators: true, // NOTE: Validators means = Validators in Tour Model, e.g minLenght, maxLength,
     });
     res.status(200).json({
       status: 'Success',
@@ -124,7 +124,6 @@ exports.getTourStats = async (req, res) => {
       },
     ]);
     res.status(200).json({
-      results: stats.length,
       status: 'Success',
       stats,
     });
