@@ -4,8 +4,8 @@ const AppError = require('./utils/appError');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const globalErrorHanlder = require('./controllers/errorController');
-const app = express();
 
+const app = express();
 // Morgan Middlewares
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));

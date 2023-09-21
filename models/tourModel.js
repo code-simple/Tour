@@ -8,13 +8,13 @@ async function priceDiscountValidator(value) {
     if (this.ownerDocument) {
       // For nested schemas (if applicable)
       return value < this.ownerDocument().price;
-    } else {
-      // For update operations, find the document first
-      const doc = await this.model.findOne({ _id: this._conditions._id });
-      if (doc) {
-        return value < doc.price;
-      }
     }
+    // For update operations, find the document first
+    const doc = await this.model.findOne({ _id: this._conditions._id });
+    if (doc) {
+      return value < doc.price;
+    }
+
     // If document is not found or in case of new document creation
     return value < this.price;
   } catch (error) {
@@ -54,6 +54,7 @@ const tourSchema = new mongoose.Schema(
     ratingsAverage: {
       type: Number,
       default: 4.5,
+      max: 5,
     },
     priceDiscount: {
       type: Number,
@@ -105,9 +106,8 @@ const tourSchema = new mongoose.Schema(
 tourSchema.virtual('durationWeek').get(function () {
   if (this.duration) {
     return (this.duration / 7).toFixed(2) * 1;
-  } else {
-    return 0.0;
   }
+  return 0.0;
 
   // 'this' means taking duration from the this document
 });
@@ -120,7 +120,7 @@ tourSchema.pre('save', function (next) {
 
 // Post DOCUMENT Middleware
 // Note: "this" keyword points to the current doc here.
-tourSchema.post('save', function (doc, next) {
+tourSchema.post('save', (doc, next) => {
   console.log(doc);
   next();
 });
