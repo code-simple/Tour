@@ -1,154 +1,3 @@
-// const Tour = require('../models/tourModel');
-// const APIFeatures = require('../utils/apiFeatures');
-// const catchAsync = require('../utils/catchAsync');
-// const AppError = require('../utils/appError');
-// // Perfect example of aliasing & how to use Middleware
-// exports.aliasTopTours = async (req, res, next) => {
-//   req.query.limit = '5';
-//   req.query.sort = 'price,-ratingsAverage';
-//   req.query.fields = 'name,price,ratingsAverage,difficulty';
-//   next();
-// };
-
-// exports.getAllTours = catchAsync(async (req, res, next) => {
-//   // EXECUTE QUERY
-//   const features = new APIFeatures(Tour.find(), req.query)
-//     .filter()
-//     .sort()
-//     .limitFields()
-//     .paginate();
-
-//   const tours = await features.query;
-
-//   res.status(200).json({
-//     status: 'Success',
-//     results: tours.length,
-//     data: {
-//       tours,
-//     },
-//   });
-// });
-
-// exports.getTour = catchAsync(async (req, res, next) => {
-//   const tour = await Tour.findById(req.params.id);
-
-//   if (!tour) {
-//     return next(new AppError('No tour found with this ID', 400));
-//   }
-//   res.status(200).json({
-//     status: 'Success',
-//     data: {
-//       tour,
-//     },
-//   });
-// });
-
-// exports.createTour = catchAsync(async (req, res, next) => {
-//   const newTour = await Tour.create(req.body);
-//   res.status(201).json({
-//     status: 'Success',
-//     data: {
-//       tour: newTour,
-//     },
-//   });
-// });
-// // Remmeber we are doing PATCH request here , as in model we set this function for patch and not PUT, PUT will modify the whole object
-// //e.g if we send PUT price :400 then everything will go away and only price property will remain.
-// exports.updateTour = catchAsync(async (req, res, next) => {
-//   const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
-//     new: true,
-//     runValidators: true, // NOTE: Validators means = Validators in Tour Model, e.g minLenght, maxLength,
-//   });
-//   if (!tour) {
-//     return next(new AppError('No tour found with this ID', 400));
-//   }
-//   res.status(200).json({
-//     status: 'Success',
-//     data: {
-//       tour,
-//     },
-//   });
-// });
-// exports.deleteTour = catchAsync(async (req, res, next) => {
-//   const deleteTour = await Tour.findByIdAndDelete(req.params.id);
-
-//   if (!deleteTour) {
-//     return next(new AppError('No tour found with this ID', 400));
-//   }
-//   res.status(200).json({
-//     status: 'Success',
-//     deleteTour,
-//   });
-// });
-
-// exports.getTourStats = catchAsync(async (req, res, next) => {
-//   const stats = await Tour.aggregate([
-//     // {
-//     //   $match: { ratingsAverage: { $gt: 4.7 } },
-//     // },
-//     {
-//       $group: {
-//         _id: { $toUpper: '$difficulty' },
-//         // _id: null,
-//         numTours: { $sum: 1 },
-//         numRatings: { $sum: '$ratingsQuatity' },
-//         avgRatings: { $avg: '$ratingsAverage' },
-//         avgPrice: { $avg: '$price' },
-//         maxPrice: { $max: '$price' },
-//         minPrice: { $min: '$price' },
-//       },
-//     },
-//     {
-//       $sort: { avgPrice: 1 },
-//     },
-//   ]);
-//   res.status(200).json({
-//     status: 'Success',
-//     stats,
-//   });
-// });
-
-// exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
-//   const year = req.params.year * 1;
-//   const plan = await Tour.aggregate([
-//     {
-//       $unwind: '$startDates',
-//     },
-//     {
-//       $match: {
-//         startDates: {
-//           $gte: new Date(`${year}-1-1`),
-//           $lte: new Date(`${year}-12-31`),
-//         },
-//       },
-//     },
-//     {
-//       $group: {
-//         _id: { $month: '$startDates' },
-//         numToursStarts: { $sum: 1 },
-//         tours: { $push: '$name' },
-//       },
-//     },
-//     {
-//       $addFields: { month: '$_id' },
-//     },
-//     {
-//       $project: { _id: 0 },
-//     },
-//     {
-//       $sort: {
-//         numToursStarts: -1,
-//       },
-//     },
-//   ]);
-
-//   res.status(200).json({
-//     results: plan.length,
-//     status: 'Success',
-//     plan,
-//   });
-// });
-
 const Tour = require('../models/tourModel');
 const APIFeatures = require('../utils/apiFeatures');
 const catchAsync = require('../utils/catchAsync');
@@ -254,7 +103,7 @@ exports.getTourStats = catchAsync(async (req, res, next) => {
       },
     },
     {
-      $sort: { avgPrice: 1 },
+      $sort: { avgPrice: -1 },
     },
     // {
     //   $match: { _id: { $ne: 'EASY' } }
@@ -292,11 +141,11 @@ exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
       },
     },
     {
-      $addFields: { month: '$_id' },
+      $addFields: { month: '$_id' }, // to insert new variable and define its value = _id
     },
     {
       $project: {
-        _id: 0,
+        _id: 0, // to hide id
       },
     },
     {
