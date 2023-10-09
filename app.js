@@ -20,7 +20,6 @@ app.use((req, res, next) => {
   req.requestTime = `Request Time: ${new Date().toDateString()}`;
   next();
 });
-
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
 
