@@ -9,12 +9,20 @@ const userSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    require: [true, 'Email is Not Provided.'],
+    required: [true, 'Email is Not Provided.'],
     unique: true,
     lowercase: true,
     validate: [validator.isEmail, 'Invalid Email'],
   },
+
   photo: String,
+
+  role: {
+    type: String,
+    default: 'user',
+    enum: ['admin', 'user', 'guide'],
+  },
+
   password: {
     type: String,
     required: [true, 'Password is not provided'],
@@ -33,6 +41,7 @@ const userSchema = new mongoose.Schema({
       message: 'Passwords donot match',
     },
   },
+  passwordChangedAt: Date,
 });
 
 // Note: Password Encryption should be in the Model
@@ -50,12 +59,27 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-//Compare encrypted password with user input password
+//Instance Method: Compare encrypted password with user input password
 userSchema.methods.correctPassword = async function (
   candicatePassword,
   userPassword,
 ) {
   return await bcrypt.compare(candicatePassword, userPassword);
+};
+
+//Instance Method: Check if the user changed the password
+userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
+  if (this.passwordChangedAt) {
+    const changedTimestamp = parseInt(
+      this.passwordChangedAt.getTime() / 1000,
+      10,
+    );
+
+    return JWTTimestamp < changedTimestamp;
+  }
+
+  // False means NOT changed
+  return false;
 };
 
 const User = mongoose.model('User', userSchema);
