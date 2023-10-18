@@ -47,6 +47,13 @@ const userSchema = new mongoose.Schema({
   passwordResetExpires: Date,
 });
 
+userSchema.pre('save', function (next) {
+  if (this.isModified('password') || this.isNew) return next();
+
+  this.passwordChangedAt = Date.now() - 1000; // Trick: We restrict usage of token if password has been changed.
+  next();
+});
+
 // Note: Password Encryption should be in the Model
 // Hash Password
 userSchema.pre('save', async function (next) {
