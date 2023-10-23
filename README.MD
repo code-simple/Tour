@@ -61,4 +61,8 @@ To Check Logs (Continuous) : docker logs -f tour
 To get Interactive Shell: docker exec -it tour /bin/bash
 
 Here in shell you can execute git pull and get latest updates of code.
+
+You can push docker to Docker Repository (First make Reposity at docker HUB) :
+docker tag tour forcod/tour
+docker push forcod/tour
 ```
