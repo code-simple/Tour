@@ -8,7 +8,7 @@ const globalErrorHanlder = require('./controllers/errorController');
 const app = express();
 // Morgan Middlewares
 if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
+  app.use(morgan(':date[clf] ":method :url"'));
 }
 
 app.use(express.json());
