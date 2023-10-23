@@ -6,7 +6,8 @@
 - Controllers / Handlers
 - Mongoose
 
-###DOCKER INFO
+### DOCKER INFO
+
 After installing DOCKER GUI for windows10 and setting up environment
 add the two files to project root
 
