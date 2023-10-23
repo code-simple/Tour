@@ -6,6 +6,21 @@
 - Controllers / Handlers
 - Mongoose
 
+### EC2 Setup
+
+3 Important tasks.
+
+- NGINX , SSL, DNS re-routing
+
+First off all We make EC2
+
+- Make ubuntu
+- Make Sure Save KeyPair so later connect using SSH
+- Make sure we allow HTTP,HTTPS, Allow from anywhere
+- Make Elastic IP and associate it with EC2 you made
+- Now make DNS using freedns[.]afraid[.]org , goto subdomains and make "A" name with Elastic IP you made to re-route
+- Later Steps [Visit][https://github.com/code-simple/nodejs-on-ec2#node-hello-world]
+
 ### DOCKER INFO
 
 After installing DOCKER GUI for windows10 and setting up environment
