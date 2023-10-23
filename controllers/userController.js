@@ -1,5 +1,14 @@
 const User = require('../models/userModel');
 const catchAsync = require('../utils/catchAsync');
+const AppError = require('../utils/appError');
+
+const filterObj = (obj, ...allowedFields) => {
+  const newObj = {};
+  Object.keys(obj).forEach((el) => {
+    if (allowedFields.includes(el)) newObj[el] = obj[el];
+  });
+  return newObj;
+};
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
   const users = await User.find();
@@ -36,3 +45,40 @@ exports.deleteUser = (req, res) => {
     message: 'This route is not yet defined!',
   });
 };
+
+// Update user
+exports.updateMe = catchAsync(async (req, res, next) => {
+  // Create error if password is provided
+  if (req.body.password || req.body.passwordConfirm) {
+    return next(
+      new AppError(
+        'This Route is not for Password change, Please use /updatePassword.',
+        400,
+      ),
+    );
+  }
+
+  // Filtered out unWanted fields
+  const filterBody = filterObj(req.body, 'name', 'email');
+  const updatedUser = await User.findByIdAndUpdate(req.user.id, filterBody, {
+    new: true,
+    runValidators: true,
+  });
+
+  res.status(200).json({
+    status: 'Success',
+    data: {
+      user: updatedUser,
+    },
+  });
+});
+
+// Delete user
+exports.deleteMe = catchAsync(async (req, res, next) => {
+  await User.findByIdAndUpdate(req.user.id, { active: false });
+
+  res.status(204).json({
+    status: 'success',
+    data: null,
+  });
+});
