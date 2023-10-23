@@ -56,7 +56,7 @@ Commands:
 cd .. "Get out of app directory"
 
 To Build Image:  docker build .\Tour\ -t tour:latest
-To Run Image on Container: docker run --name tour 3000:3000/tcp -d tour
+To Run Image on Container: docker run --name tour -p 3000:3000/tcp -d tour
 To Check Logs (Continuous) : docker logs -f tour
 To get Interactive Shell: docker exec -it tour /bin/bash
 
