@@ -7,7 +7,6 @@
 - Mongoose
 
 ### EC2 Setup
-
 3 Important tasks.
 
 - NGINX , SSL, DNS re-routing
