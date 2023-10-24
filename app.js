@@ -17,7 +17,7 @@ app.use(express.static(`${__dirname}/public`));
 
 // This middleweare we can use requestTime
 app.use((req, res, next) => {
-  req.requestTime = `Request Time: ${new Date().toDateString()}`;
+  req.requestTime = `Req Timestamp: ${new Date().toDateString()}`;
   next();
 });
 app.use('/api/v1/tours', tourRouter);
