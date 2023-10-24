@@ -11,7 +11,7 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan(':date[clf] ":method :url"'));
 }
 
-console.log('CI/CD');
+console.log('ONE MORE TIME');
 app.use(express.json());
 // Hosting files in public folder
 app.use(express.static(`${__dirname}/public`));
