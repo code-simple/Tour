@@ -22,7 +22,7 @@ jobs:
           REMOTE_HOST: ${{ secrets.HOST }}
           REMOTE_USER: ${{ secrets.USERNAME }}
           script: |
-            cd /home/ubuntu/livelypencilbackend
+            cd /home/ubuntu/Tour
             git reset --hard HEAD
             git pull origin main
             git status
