@@ -20,9 +20,10 @@ jobs:
         key: ${{ secrets.PRIVATE_KEY }}
         port: 22
         script: |
+          su ubuntu
           cd /home/ubuntu/Tour
           git reset --hard HEAD
           git pull origin main
           git status
-          npm install
+          npm i
           pm2 restart 0
