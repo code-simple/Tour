@@ -74,3 +74,4 @@ You can push docker to Docker Repository (First make Reposity at docker HUB) :
 docker tag tour forcod/tour
 docker push forcod/tour
 ```
+Working CI/CD implemented
