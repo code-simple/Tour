@@ -1,5 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
+const hpp = require('hpp');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const rateLimit = require('express-rate-limit');
@@ -40,6 +41,20 @@ app.use(xss());
 
 // Hosting files in public folder
 app.use(express.static(`${__dirname}/public`));
+
+//Prevent parameter pollution
+app.use(
+  hpp({
+    whitelist: [
+      'duration',
+      'ratingsQuantity',
+      'ratingsAverage',
+      'maxGroupSize',
+      'difficulty',
+      'price',
+    ],
+  }),
+);
 
 // This middleweare we can use requestTime
 app.use((req, res, next) => {
