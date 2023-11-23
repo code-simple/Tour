@@ -4,6 +4,7 @@ const hpp = require('hpp');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const rateLimit = require('express-rate-limit');
+const { join } = require('node:path');
 const helmet = require('helmet');
 const AppError = require('./utils/appError');
 const tourRouter = require('./routes/tourRoutes');
@@ -63,6 +64,10 @@ app.use((req, res, next) => {
 });
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
+
+app.get('/chat', (req, res) => {
+  res.sendFile(join(__dirname, '/index.html'));
+});
 
 // Route Error handling
 //NOTE: whenever there is next(err) that will always jump to globalErrorHandler as it has (err,) in it.
