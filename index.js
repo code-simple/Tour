@@ -11,11 +11,17 @@ const port = process.env.PORT || 5000;
 const server = createServer(app);
 const io = new Server(server);
 io.on('connection', (socket) => {
-  console.log('Hello');
+  console.log('Connected Users:', io.engine.clientsCount);
+
+  console.log(`${socket.id} Connected`);
   socket.on('chat message', (msg) => {
     io.emit('chat message', msg);
   });
+  socket.on('disconnect', () => {
+    console.log(`${socket.id} Disconnected`);
+  });
 });
+
 //--------------------------------
 server.listen(port, () => {
   console.log(`Listening to the server at port ${port}`);

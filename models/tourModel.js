@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify');
 const validator = require('validator');
+const User = require('./userModel');
 
 //NOTE: When we use this.Price in validator directly then it only works during create, but not update, because it cannot get value of price while updating. For that reason to work both in update and create i have created this function 😋chatGPT
 async function priceDiscountValidator(value) {
@@ -96,6 +97,27 @@ const tourSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    startLocation: {
+      // GeoJSON
+      type: {
+        type: String,
+        default: 'Point',
+        enum: ['Point'],
+      },
+      coordinates: [Number],
+      address: String,
+      description: String,
+    },
+    locations: [
+      {
+        type: { type: String, default: 'Point', enum: ['Point'] },
+        coordinates: [Number],
+        address: String,
+        description: String,
+        day: Number,
+      },
+    ],
+    guides: Array,
   },
   {
     toJSON: { virtuals: true },
@@ -113,6 +135,12 @@ tourSchema.virtual('durationWeek').get(function () {
 });
 
 //Pre DOCUMENT Middleware it runs before .save() .create() document
+tourSchema.pre('save', async function (next) {
+  const guidePromises = this.guides.map(async (id) => await User.findById(id));
+  this.guides = await Promise.all(guidePromises);
+  next();
+});
+
 tourSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true }); // We are going to make slug out of name and keep it lowercase
   next(); // we call next so it can call next middleware in the stack

@@ -4,6 +4,8 @@ const form = document.getElementById('form');
 const input = document.getElementById('input');
 const messages = document.getElementById('messages');
 
+// Call the function whenever you want to log the current count
+
 form.addEventListener('submit', (e) => {
   e.preventDefault();
   if (input.value) {
@@ -11,7 +13,6 @@ form.addEventListener('submit', (e) => {
     input.value = '';
   }
 });
-
 socket.on('chat message', (msg) => {
   const item = document.createElement('li');
   item.textContent = msg;
