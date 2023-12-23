@@ -10,6 +10,7 @@ const AppError = require('./utils/appError');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const globalErrorHanlder = require('./controllers/errorController');
+const reviewRouter = require('./routes/reviewRoutes');
 
 const app = express();
 // Global Middlewares
@@ -62,8 +63,11 @@ app.use((req, res, next) => {
   req.requestTime = `Req Timestamp: ${new Date().toDateString()}`;
   next();
 });
+
+// 3) Routes
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/reviews', reviewRouter);
 
 app.get('/chat', (req, res) => {
   res.sendFile(join(__dirname, '/index.html'));

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const slugify = require('slugify');
 const validator = require('validator');
-const User = require('./userModel');
+// const User = require('./userModel');
 
 //NOTE: When we use this.Price in validator directly then it only works during create, but not update, because it cannot get value of price while updating. For that reason to work both in update and create i have created this function 😋chatGPT
 async function priceDiscountValidator(value) {
@@ -117,7 +117,7 @@ const tourSchema = new mongoose.Schema(
         day: Number,
       },
     ],
-    guides: Array,
+    guides: [{ type: mongoose.Schema.ObjectId, ref: 'User' }],
   },
   {
     toJSON: { virtuals: true },
@@ -135,9 +135,17 @@ tourSchema.virtual('durationWeek').get(function () {
 });
 
 //Pre DOCUMENT Middleware it runs before .save() .create() document
-tourSchema.pre('save', async function (next) {
-  const guidePromises = this.guides.map(async (id) => await User.findById(id));
-  this.guides = await Promise.all(guidePromises);
+// tourSchema.pre('save', async function (next) {
+//   const guidePromises = this.guides.map(async (id) => await User.findById(id));
+//   this.guides = await Promise.all(guidePromises);
+//   next();
+// });
+
+tourSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'guides',
+    select: '-__v -passwordChangedAt',
+  });
   next();
 });
 
